@@ -23,6 +23,13 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error("Erro ao salvar ofício:", error)
 
+    if (error instanceof Error && error.message === "NOT_AUTHENTICATED") {
+      return NextResponse.json(
+        { error: "NOT_AUTHENTICATED", message: "Conecte uma planilha do Google primeiro" },
+        { status: 401 }
+      )
+    }
+
     const errorMessage = error instanceof Error ? error.message : "Erro interno do servidor"
 
     return NextResponse.json(
@@ -42,6 +49,13 @@ export async function GET() {
     })
   } catch (error) {
     console.error("Erro ao buscar ofícios:", error)
+
+    if (error instanceof Error && error.message === "NOT_AUTHENTICATED") {
+      return NextResponse.json(
+        { error: "NOT_AUTHENTICATED", message: "Conecte uma planilha do Google primeiro" },
+        { status: 401 }
+      )
+    }
 
     const errorMessage = error instanceof Error ? error.message : "Erro interno do servidor"
 
